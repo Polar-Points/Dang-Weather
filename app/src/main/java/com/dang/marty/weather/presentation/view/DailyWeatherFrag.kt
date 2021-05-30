@@ -14,8 +14,8 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.dang.marty.weather.utils.Constants
 import com.dang.marty.weather.R
-import com.dang.marty.weather.data.repository.LocationDataRepository
-import com.dang.marty.weather.data.repository.WeatherRepository
+import com.dang.marty.weather.data.repository.LocationDataRepositoryImpl
+import com.dang.marty.weather.data.repository.WeatherRepositoryImpl
 import com.dang.marty.weather.data.webservice.OpenWeatherApiService
 import com.dang.marty.weather.presentation.presenter.DailyWeatherPresenter
 import com.dang.marty.weather.presentation.presenter.DailyWeatherPresenterImpl
@@ -23,46 +23,20 @@ import com.dang.marty.weather.presentation.presenter.DailyWeatherView
 import com.dang.marty.weather.databinding.FragmentDailyWeatherBinding
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.OkHttpClient
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.*
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class DailyWeatherFrag : Fragment(), DailyWeatherView, SeekBar.OnSeekBarChangeListener  {
 
-    private lateinit var presenter: DailyWeatherPresenter
+    @Inject lateinit var presenter: DailyWeatherPresenter
     private lateinit var binding: FragmentDailyWeatherBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val locationRepo = LocationDataRepository(
-            requireContext(),
-            Geocoder(requireContext(), Locale.getDefault()),
-            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        )
-
-        val moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
-
-        val httpClient = OkHttpClient.Builder()
-
-        val retrofit = retrofit2.Retrofit.Builder()
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .client(httpClient.build())
-            .baseUrl("https://api.openweathermap.org")
-            .build()
-
-
-
-        val weatherRepo = WeatherRepository(retrofit.create(OpenWeatherApiService::class.java))
-
-        presenter = DailyWeatherPresenterImpl(EmptyCoroutineContext, weatherRepo, locationRepo)
         presenter.setView(this)
     }
 

@@ -1,7 +1,7 @@
 package com.dang.marty.weather.utils
 
 import com.marty.dang.polarpointsweatherapp.data.model.CurrentWeatherModel
-import com.marty.dang.polarpointsweatherapp.presentation.model.DataSourceModel
+import com.dang.marty.weather.presentation.model.DataSourceModel
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt

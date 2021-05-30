@@ -3,12 +3,16 @@ package com.dang.marty.weather.data.repository
 import com.dang.marty.weather.utils.Transformers
 import com.dang.marty.weather.data.webservice.OpenWeatherApiService
 import com.dang.marty.weather.utils.Keys
-import com.marty.dang.polarpointsweatherapp.presentation.model.DataSourceModel
+import com.dang.marty.weather.presentation.model.DataSourceModel
 
-class WeatherRepository (
-    private  val webservice: OpenWeatherApiService) {
 
-    suspend fun getCurrentWeather(latitude: Double, longitude: Double): DataSourceModel {
+interface WeatherRepository {
+    fun getCurrentWeather(latitude: Double, longitude: Double): DataSourceModel
+}
+class WeatherRepositoryImpl (
+    private  val webservice: OpenWeatherApiService): WeatherRepository {
+
+    override fun getCurrentWeather(latitude: Double, longitude: Double): DataSourceModel {
 
         //val cacheObject = cache.getWeatherObject()
 
