@@ -38,7 +38,6 @@ class DailyWeatherPresenterImpl @Inject constructor(
 
     override fun viewInitialized() {
 
-
         // get latitude and longitude from location repo
             getCoordinatesFromLocationRepo().let { locationMap->
             val latitude = locationMap["latitude"] ?: 35.0
@@ -70,8 +69,6 @@ class DailyWeatherPresenterImpl @Inject constructor(
     }
 
     private fun getWeather(latitude: Double, longitude: Double, location: String) {
-
-        weatherRepo.getCurrentWeather(latitude, longitude)
 
             val disposable = weatherRepo.getCurrentWeather(latitude, longitude)
                 .subscribeOn(scheduler.io())

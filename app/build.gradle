@@ -39,6 +39,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -74,9 +79,9 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
-
-
     testImplementation 'junit:junit:4.13.2'
+    testImplementation "io.mockk:mockk:1.10.6"
+    testImplementation 'org.robolectric:robolectric:4.4'
     // Testing Navigation
     androidTestImplementation("androidx.navigation:navigation-testing:$nav_version")
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
