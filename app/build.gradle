@@ -18,7 +18,9 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.android.dagger.CustomTestRunner"
+
     }
 
     buildTypes {
@@ -79,9 +81,20 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
+    androidTestImplementation 'org.mockito:mockito-android:3.6.0'
+    androidTestImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
+    testImplementation 'org.mockito:mockito-core:3.6.0'
+    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
+
     testImplementation 'junit:junit:4.13.2'
     testImplementation "io.mockk:mockk:1.10.6"
     testImplementation 'org.robolectric:robolectric:4.4'
+    testImplementation 'com.google.dagger:hilt-android-testing:2.35'
+    kaptTest 'com.google.dagger:hilt-android-compiler:2.35' // For instrumented tests.
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.35'
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.35'
+
+
     // Testing Navigation
     androidTestImplementation("androidx.navigation:navigation-testing:$nav_version")
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
