@@ -1,5 +1,6 @@
 package com.dang.marty.weather.utils
 
+import android.annotation.SuppressLint
 import com.dang.marty.weather.data.model.CurrentWeatherModel
 import com.dang.marty.weather.presentation.model.DataSourceModel
 import io.reactivex.Observable
@@ -17,6 +18,7 @@ import kotlin.math.roundToInt
 object Transformers {
 
     // transforms API data -> DataSourceModel
+    @SuppressLint("CheckResult")
     fun transformApiToDataSourceModel(currentWeatherModel: Observable<CurrentWeatherModel>) : DataSourceModel {
         val currentTempList = mutableListOf<String>()
         val weatherDescriptionList = mutableListOf<String>()
