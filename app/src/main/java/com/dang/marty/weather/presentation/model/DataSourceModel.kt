@@ -1,4 +1,4 @@
-package com.marty.dang.polarpointsweatherapp.presentation.model
+package com.dang.marty.weather.presentation.model
 
 /**
  *   Created by Marty Dang on 10/2/20

@@ -6,7 +6,9 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.dang.marty.weather.R
 import com.dang.marty.weather.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

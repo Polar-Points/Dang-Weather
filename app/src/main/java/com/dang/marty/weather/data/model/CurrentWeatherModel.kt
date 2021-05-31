@@ -1,5 +1,7 @@
-package com.marty.dang.polarpointsweatherapp.data.model
+package com.dang.marty.weather.data.model
 
+import com.marty.dang.polarpointsweatherapp.data.model.CurrentModel
+import com.marty.dang.polarpointsweatherapp.data.model.HourlyModel
 import com.squareup.moshi.Json
 
 /**
