@@ -1,6 +1,9 @@
 package com.dang.marty.weather.data.webservice
 
-import com.marty.dang.polarpointsweatherapp.data.model.CurrentWeatherModel
+import com.dang.marty.weather.data.model.CurrentWeatherModel
+import io.reactivex.Observable
+import io.reactivex.Single
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -18,5 +21,5 @@ interface OpenWeatherApiService {
         @Query("lon") longitude: Double,
         @Query("exclude") exclude: String,
         @Query("appid") apiKey: String,
-        @Query("units") unit: String): CurrentWeatherModel
+        @Query("units") unit: String): Observable<CurrentWeatherModel>
 }

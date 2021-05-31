@@ -4,19 +4,21 @@ import com.dang.marty.weather.utils.Transformers
 import com.dang.marty.weather.data.webservice.OpenWeatherApiService
 import com.dang.marty.weather.utils.Keys
 import com.dang.marty.weather.presentation.model.DataSourceModel
+import io.reactivex.Observable
 
 
 interface WeatherRepository {
-    fun getCurrentWeather(latitude: Double, longitude: Double): DataSourceModel
+    fun getCurrentWeather(latitude: Double, longitude: Double): Observable<DataSourceModel>
 }
 class WeatherRepositoryImpl (
     private  val webservice: OpenWeatherApiService): WeatherRepository {
 
-    override fun getCurrentWeather(latitude: Double, longitude: Double): DataSourceModel {
+    override fun getCurrentWeather(latitude: Double, longitude: Double): Observable<DataSourceModel> {
 
-        //val cacheObject = cache.getWeatherObject()
+        return Observable.fromCallable {
+            //val cacheObject = cache.getWeatherObject()
 
-        // valid cache
+            // valid cache
 //        if(cacheObject != null) {
 //            val time = System.currentTimeMillis() - cacheObject.lastTimeAccessed
 //            if(60000 >= time) {
@@ -24,13 +26,20 @@ class WeatherRepositoryImpl (
 //            }
 //        }
 
-        // make a new network request since cache is old
+            // make a new network request since cache is old
 
-        val data = webservice.getCurrentWeather(latitude, longitude,"minutely,daily", Keys.API_KEY,"imperial")
-        val dataSourceModel = Transformers.transformApiToDataSourceModel(data)
+            val data = webservice.getCurrentWeather(
+                latitude,
+                longitude,
+                "minutely,daily",
+                Keys.API_KEY,
+                "imperial"
+            )
+            Transformers.transformApiToDataSourceModel(data)
 
-       // cache.deleteCache()
-        // cache.updateCache(Transformers.transformDataSourceModelToCache(dataSourceModel))
-        return dataSourceModel
+            // cache.deleteCache()
+            // cache.updateCache(Transformers.transformDataSourceModelToCache(dataSourceModel))
+        }
     }
+
 }

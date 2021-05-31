@@ -1,7 +1,9 @@
 package com.dang.marty.weather.utils
 
-import com.marty.dang.polarpointsweatherapp.data.model.CurrentWeatherModel
+import com.dang.marty.weather.data.model.CurrentWeatherModel
 import com.dang.marty.weather.presentation.model.DataSourceModel
+import io.reactivex.Observable
+import retrofit2.Call
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
@@ -15,7 +17,7 @@ import kotlin.math.roundToInt
 object Transformers {
 
     // transforms API data -> DataSourceModel
-    fun transformApiToDataSourceModel(currentWeatherModel: CurrentWeatherModel) : DataSourceModel {
+    fun transformApiToDataSourceModel(currentWeatherModel: Observable<CurrentWeatherModel>) : DataSourceModel {
         val currentTempList = mutableListOf<String>()
         val weatherDescriptionList = mutableListOf<String>()
         val humidityList = mutableListOf<String>()
@@ -24,33 +26,36 @@ object Transformers {
         val dateList = mutableListOf<String>()
         val lastTimeAccessed = System.currentTimeMillis()
 
-        // add in the current temp first
-        currentTempList.add(currentWeatherModel.current?.temp?.roundToInt().toString()+" \u2109")
-        weatherDescriptionList.add(currentWeatherModel.current?.weather?.get(0)?.description.toString())
-        humidityList.add(currentWeatherModel.current?.humidity.toString())
-        precipitationList.add((currentWeatherModel.hourly?.get(0)?.pop?.times(100)?.toInt()).toString())
-        windList.add(currentWeatherModel.current?.windSpeed?.roundToInt().toString())
+        currentWeatherModel.subscribe { currentWeatherModel->
+            // add in the current temp first
+            currentTempList.add(currentWeatherModel.current?.temp?.roundToInt().toString()+" \u2109")
+            weatherDescriptionList.add(currentWeatherModel.current?.weather?.get(0)?.description.toString())
+            humidityList.add(currentWeatherModel.current?.humidity.toString())
+            precipitationList.add((currentWeatherModel.hourly?.get(0)?.pop?.times(100)?.toInt()).toString())
+            windList.add(currentWeatherModel.current?.windSpeed?.roundToInt().toString())
 
-        val date = currentWeatherModel.current?.dt?.times(1000L)
-        val sdf = SimpleDateFormat("MM-dd-yyy h:mm a", Locale.US)
-        val humanTime = sdf.format(Date(date!!))
-        dateList.add(humanTime)
-
-        // be sure to skip the first entry in the hourly
-        // transform into DataSourceModel so view model can consume
-        for(hourly in currentWeatherModel.hourly.orEmpty().subList(1, 25)){
-            currentTempList.add(hourly.temp?.roundToInt().toString()+" \u2109")
-            weatherDescriptionList.add(hourly.weather?.get(0)?.description.toString())
-            humidityList.add(hourly.humidity.toString())
-            precipitationList.add((hourly.pop?.times(100)?.toInt()).toString())
-            windList.add(hourly.windSpeed?.roundToInt().toString())
-
-            val date = hourly.dt?.times(1000L)
-
+            val date = currentWeatherModel.current?.dt?.times(1000L)
             val sdf = SimpleDateFormat("MM-dd-yyy h:mm a", Locale.US)
             val humanTime = sdf.format(Date(date!!))
             dateList.add(humanTime)
+
+            // be sure to skip the first entry in the hourly
+            // transform into DataSourceModel so view model can consume
+            for(hourly in currentWeatherModel.hourly.orEmpty().subList(1, 25)){
+                currentTempList.add(hourly.temp?.roundToInt().toString()+" \u2109")
+                weatherDescriptionList.add(hourly.weather?.get(0)?.description.toString())
+                humidityList.add(hourly.humidity.toString())
+                precipitationList.add((hourly.pop?.times(100)?.toInt()).toString())
+                windList.add(hourly.windSpeed?.roundToInt().toString())
+
+                val date = hourly.dt?.times(1000L)
+
+                val sdf = SimpleDateFormat("MM-dd-yyy h:mm a", Locale.US)
+                val humanTime = sdf.format(Date(date!!))
+                dateList.add(humanTime)
+            }
         }
+
 
         return DataSourceModel(
             currentTempList,
