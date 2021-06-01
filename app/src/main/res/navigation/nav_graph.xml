@@ -9,5 +9,14 @@
         android:id="@+id/dailyWeatherFrag"
         android:name="com.dang.marty.weather.presentation.view.DailyWeatherFrag"
         android:label="fragment_daily_weather"
-        tools:layout="@layout/fragment_daily_weather" />
+        tools:layout="@layout/fragment_daily_weather" >
+        <action
+            android:id="@+id/action_dailyWeatherFrag_to_settingsFrag2"
+            app:destination="@id/settingsFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFrag"
+        android:name="com.dang.marty.weather.presentation.view.SettingsFrag"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>
