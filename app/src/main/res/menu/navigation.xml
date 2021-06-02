@@ -4,4 +4,10 @@
         android:id="@+id/dailyWeatherFrag"
         android:icon="@drawable/daily_icon"
         android:title="@string/daily_tab_title"/>
+
+    <item
+        android:id="@+id/settingsFrag"
+        android:icon="@drawable/settings_icon"
+        android:title="Settings"
+        />
 </menu>
